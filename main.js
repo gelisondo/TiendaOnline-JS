@@ -4,7 +4,7 @@ const desktopMenu = document.querySelector('.desktop-menu');
 const menuCarritoIcon = document.querySelector('.navbar-shopping-cart');
 const iconMenu = document.querySelector('.menu');
 const mobilMenu = document.querySelector('.mobile-menu');
-const aside = document.querySelector('.product-detail');
+const shoppingCartContainer = document.querySelector('#shoppingCartContainer');
 const cardsContainer = document.querySelector('.cards-container');
 
 //Escuchamos el evento click para llamar una función
@@ -14,11 +14,11 @@ menuCarritoIcon.addEventListener('click', toggleCarritoAside);
 
 function toggleDesktopMenu(){
     //Si existe devolvera un True
-    const isAsideClosed = aside.classList.contains('inactive');
+    const isAsideClosed = shoppingCartContainer.classList.contains('inactive');
 
     //Verificamos que el aside este abierto
     if (!isAsideClosed){
-        aside.classList.add('inactive');
+        shoppingCartContainer.classList.add('inactive');
     }
 
     //El toogle cambia el valor, si existe inactive la saca, si no lo agrega
@@ -27,10 +27,10 @@ function toggleDesktopMenu(){
 }
 
 function toggleMobilMenu(){
-    const isAsideClosed = aside.classList.contains('inactive');
+    const isAsideClosed = shoppingCartContainer.classList.contains('inactive');
 
     if (!isAsideClosed){
-        aside.classList.add('inactive');
+        shoppingCartContainer.classList.add('inactive');
     }
 
     //Cambia el valor
@@ -52,7 +52,7 @@ function toggleCarritoAside() {
     }
 
 
-    aside.classList.toggle('inactive');
+    shoppingCartContainer.classList.toggle('inactive');
 
 }
 
