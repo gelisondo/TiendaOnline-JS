@@ -3,14 +3,22 @@ const menuEmail = document.querySelector('.navbar-email');
 const desktopMenu = document.querySelector('.desktop-menu');
 const menuCarritoIcon = document.querySelector('.navbar-shopping-cart');
 const iconMenu = document.querySelector('.menu');
+const productDetailCloseIcon = document.querySelector('.product-detail-close');
 const mobilMenu = document.querySelector('.mobile-menu');
 const shoppingCartContainer = document.querySelector('#shoppingCartContainer');
+const productDetailContainer = document.querySelector('#productDetail');
+const imagenDetailID = document.querySelector('#imagenDetail');
+const priceDetail = document.querySelector('#priceDetail');
+const nameDetail = document.querySelector('#nameDetail');
+
+
 const cardsContainer = document.querySelector('.cards-container');
 
 //Escuchamos el evento click para llamar una función
 menuEmail.addEventListener('click', toggleDesktopMenu);
 iconMenu.addEventListener('click', toggleMobilMenu);
 menuCarritoIcon.addEventListener('click', toggleCarritoAside);
+productDetailCloseIcon.addEventListener('click', closeProductDetailAside);
 
 function toggleDesktopMenu(){
     //Si existe devolvera un True
@@ -33,6 +41,9 @@ function toggleMobilMenu(){
         shoppingCartContainer.classList.add('inactive');
     }
 
+    //Llamamos a la funsión closeProductDetailAside para cerrarla por si esta habierta
+    closeProductDetailAside();
+
     //Cambia el valor
     mobilMenu.classList.toggle('inactive');
 
@@ -47,6 +58,13 @@ function toggleCarritoAside() {
         mobilMenu.classList.add('inactive');
     }
 
+    //Cerramos el productDetail si otros menus se activan
+    const productDetailClosed = productDetailContainer.classList.contains('inactive');
+    if(!productDetailClosed){
+        productDetailContainer.classList.add('inactive');
+    }
+
+
     if(!isDesktopMenuClosed){
         desktopMenu.classList.add('inactive');
     }
@@ -56,6 +74,18 @@ function toggleCarritoAside() {
 
 }
 
+function openProductDetailAside() {
+    productDetailContainer.classList.remove('inactive');
+
+}
+
+function closeProductDetailAside() {
+    //Siempre que querramos abrir los detalles cerraremos el carrito
+    shoppingCartContainer.classList.add('inactive');
+    productDetailContainer.classList.add('inactive');
+
+
+}
 
 // Generamos un arrays para guardar objetos con los datos de latienda
 const productList = [];
@@ -93,8 +123,6 @@ productList.push({
     price: 80,
     imagen: 'https://images.pexels.com/photos/17758160/pexels-photo-17758160/free-photo-of-sucio-vintage-retro-kodak.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
 })
-
-
 
 //6
 productList.push({
@@ -140,6 +168,36 @@ function renderProducts(arr){
     
         //Agregamos una imagen 
         const img = document.createElement('img');
+
+        //Agregamos el addEventListener aqui por que en HTML no existen estos elementos, aca si por que lo creamos por JS
+        img.addEventListener('click', function(event) {
+            openProductDetailAside();
+            
+            //Obtenemos la URL del atributo SRC de la imagen
+            const srcImagenClicked =  event.target.currentSrc;
+            imagenDetailID.setAttribute('src', srcImagenClicked);
+            
+            //Buscamos en nuestro array, que objeto tiene dicha Cadena de texto
+            //y Crea un nuevo array con un objeto con esos datos
+            const articuloFiltrado = arr.filter(function(arrObjeto){
+                return arrObjeto.imagen == srcImagenClicked;
+            });
+            //Obtenemos El nombre 
+            const articuloFiltradoNombre = articuloFiltrado.map(function(nameFilter){
+                return nameFilter.name
+            });
+            nameDetail.innerText = articuloFiltradoNombre;
+
+            //Obtenemos el Precio de ese objeto
+            const articuloFiltradoPrecio = articuloFiltrado.map(function(nameFilter){
+                return nameFilter.price
+            });
+            priceDetail.innerText = '$' + articuloFiltradoPrecio;
+
+          
+        });
+
+
         //Seteamos un atributo y le damos el valor del objeto product.img
         img.setAttribute('src', product.imagen);
     
