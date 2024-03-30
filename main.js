@@ -169,8 +169,13 @@ function renderProducts(arr){
         //Agregamos una imagen 
         const img = document.createElement('img');
 
+        //Seteamos un atributo y le damos el valor del objeto product.img
+        img.setAttribute('src', product.imagen);
+
         //Agregamos el addEventListener aqui por que en HTML no existen estos elementos, aca si por que lo creamos por JS
         img.addEventListener('click', function(event) {
+            
+            //Llamamos a la función para remover la clase "inactive" y visualizar el Aside
             openProductDetailAside();
             
             //Obtenemos la URL del atributo SRC de la imagen
@@ -197,9 +202,6 @@ function renderProducts(arr){
           
         });
 
-
-        //Seteamos un atributo y le damos el valor del objeto product.img
-        img.setAttribute('src', product.imagen);
     
         
             //creamos elementos HTML
