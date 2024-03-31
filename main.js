@@ -88,9 +88,22 @@ function closeProductDetailAside() {
 
 }
 
+
+
 // Generamos un arrays para guardar objetos con los datos de latienda
 const productList = [];
 
+//Issue 1
+// Generamos el array de carrito.
+const carritoCompras = [];
+
+//Issue 1
+function agregarAlCarrito(identificador) {
+
+    //Agregamos al carrito de compras
+    carritoCompras.push(productList[identificador]);
+
+};
 
 //Agregamos elementos al arrays con los datos de los productos.
 productList.push({
@@ -165,8 +178,13 @@ productList.push({
 
 })
 
+
 //Resivimos un array como parametro para renderizar
 function renderProducts(arr){
+
+    //Issue 1
+    let contador = 0;
+
     //Recorremos el array para representar en HTML nuestros productos
     //nos da directamente el elemento del array
     for (product of arr ){
@@ -238,6 +256,18 @@ function renderProducts(arr){
                 const productInfoFigure = document.createElement('figure');
                     const productInfoFigureImg = document.createElement('img');
                     productInfoFigureImg.setAttribute('src', './icons/bt_add_to_cart.svg');
+                
+                    
+                    
+                    //Issue 1
+                    //Agregamos un evento onclick en cada elemento generado para llamar a un función
+                    productInfoFigureImg.setAttribute('onclick', 'agregarAlCarrito('+ contador +')');
+                    contador++;
+
+
+
+                                
+
     
             //Agregamos El orden de los elementos con appendChild, indicando cual sera el hijo del elemento seleccionado
             //Agregamos a product-card debajo de cards-container
