@@ -183,7 +183,7 @@ function renderProducts(arr){
 
         //Agregamos el addEventListener aqui por que en HTML no existen estos elementos, aca si por que lo creamos por JS
         img.addEventListener('click', function(event) {
-
+            
             //Llamamos a la función para remover la clase "inactive" y visualizar el Aside
             openProductDetailAside();
             
