@@ -11,7 +11,7 @@ const imagenDetailID = document.querySelector('#imagenDetail');
 const priceDetail = document.querySelector('#priceDetail');
 const nameDetail = document.querySelector('#nameDetail');
 const descripcionDetail = document.querySelector('#descripcionDetail');
-
+const myOrderContent = document.querySelector('#my-order-content');
 
 const cardsContainer = document.querySelector('.cards-container');
 
@@ -73,6 +73,9 @@ function toggleCarritoAside() {
 
     shoppingCartContainer.classList.toggle('inactive');
 
+    //llamamos a la función de renderizado del carrito
+    renderCarrito(carritoCompras);
+
 }
 
 function openProductDetailAside() {
@@ -98,11 +101,27 @@ const productList = [];
 const carritoCompras = [];
 
 //Issue 1
+//Agregar al carrito
 function agregarAlCarrito(identificador) {
 
     //Agregamos al carrito de compras
     carritoCompras.push(productList[identificador]);
 
+    //Deveriamos agregar un control para verificar si ya existe ese objeto
+    //si es así, deberiamos agregar un nuevo elemento a ese objeto que sea la cantidad.
+
+};
+
+//Issue 1
+//Eliminar del carrito
+
+function eliminarDelCarrito(identificador){
+
+    //Eliminamos producto del carrito
+    carritoCompras.splice(identificador, 1);
+
+    //Volvemos a renderizar por articulo eliminado
+    renderCarrito(carritoCompras);
 };
 
 //Agregamos elementos al arrays con los datos de los productos.
@@ -178,6 +197,50 @@ productList.push({
 
 })
 
+//Renderizamo el carrito de compras
+function renderCarrito(arr){
+
+    let contadorCarrito = 0;
+
+    for (productCartArr of arr) {
+    // <div class="shopping-cart">
+    //   <figure>
+    //     <img src="https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="bike">
+    //   </figure>
+    //   <p>Bike</p>
+    //   <p>$30,00</p>
+    //   <img src="./icons/icon_close.png" alt="close">
+    // </div>
+
+    const shoppingCart = document.createElement('div');
+    shoppingCart.classList.add('shopping-cart');
+        
+    const figureImgCart = document.createElement('figure');
+    const imgCart = document.createElement('img');
+    imgCart.setAttribute('src', productCartArr.imagen);
+
+    const parrafoNombre = document.createElement('p');
+    parrafoNombre.innerText = productCartArr.name;
+    
+    const parrafoPrice = document.createElement('p');
+    parrafoNombre.innerText = productCartArr.price;
+
+    const imgEliminarProducto = documento.createElement('img');
+    imgEliminarProducto.setAttribute('src', './icons/icon_close.png');
+    imgEliminarProducto.setAttribute('alt', 'close');
+    imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito(' + contadorCarrito + ')' );
+    contadorCarrito++;
+
+    //Maquetado
+    myOrderContent.appendChild(shoppingCart);
+        figureImgCart.appendChild(shoppingCart);
+            imgCart.appendChild(imgCart);
+        
+        shoppingCart.append(parrafoNombre , parrafoPrice);
+        shoppingCart.appendChild(imgEliminarProducto);
+
+    }
+}
 
 //Resivimos un array como parametro para renderizar
 function renderProducts(arr){
