@@ -11,7 +11,7 @@ const imagenDetailID = document.querySelector('#imagenDetail');
 const priceDetail = document.querySelector('#priceDetail');
 const nameDetail = document.querySelector('#nameDetail');
 const descripcionDetail = document.querySelector('#descripcionDetail');
-const myOrderContent = document.querySelector('#my-order-content');
+const myOrderContent = document.querySelector('.my-order-content');
 
 const cardsContainer = document.querySelector('.cards-container');
 
@@ -120,8 +120,9 @@ function eliminarDelCarrito(identificador){
     //Eliminamos producto del carrito
     carritoCompras.splice(identificador, 1);
 
-    //Volvemos a renderizar por articulo eliminado
-    renderCarrito(carritoCompras);
+    //Removemos los Elementos HTML del DOM
+    document.getElementById("shoppingCart"+identificador).remove();
+
 };
 
 //Agregamos elementos al arrays con los datos de los productos.
@@ -197,6 +198,7 @@ productList.push({
 
 })
 
+//Issue 1
 //Renderizamo el carrito de compras
 function renderCarrito(arr){
 
@@ -212,8 +214,11 @@ function renderCarrito(arr){
     //   <img src="./icons/icon_close.png" alt="close">
     // </div>
 
+    //Agregamos un ID a cada objeto creado para poder ser eliminado
+
     const shoppingCart = document.createElement('div');
     shoppingCart.classList.add('shopping-cart');
+    shoppingCart.setAttribute('id', 'shoppingCart'+contadorCarrito );
         
     const figureImgCart = document.createElement('figure');
     const imgCart = document.createElement('img');
@@ -225,19 +230,24 @@ function renderCarrito(arr){
     const parrafoPrice = document.createElement('p');
     parrafoNombre.innerText = productCartArr.price;
 
-    const imgEliminarProducto = documento.createElement('img');
+    const imgEliminarProducto = document.createElement('img');
     imgEliminarProducto.setAttribute('src', './icons/icon_close.png');
     imgEliminarProducto.setAttribute('alt', 'close');
-    imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito(' + contadorCarrito + ')' );
+    imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito('+contadorCarrito+')' );
     contadorCarrito++;
 
     //Maquetado
     myOrderContent.appendChild(shoppingCart);
-        figureImgCart.appendChild(shoppingCart);
-            imgCart.appendChild(imgCart);
+     
+     shoppingCart.appendChild(figureImgCart);
+
+      figureImgCart.appendChild(imgCart);
+      
         
-        shoppingCart.append(parrafoNombre , parrafoPrice);
-        shoppingCart.appendChild(imgEliminarProducto);
+     shoppingCart.appendChild(parrafoNombre);
+     shoppingCart.appendChild(parrafoPrice);
+     shoppingCart.appendChild(imgEliminarProducto);
+    //  console.log(imgEliminarProducto);
 
     }
 }
