@@ -109,25 +109,31 @@ const verificationCcArray = [];
 //Agregar al carrito
 function agregarAlCarrito(identificador) {
 
-    const verifyProduct  = productList[identificador].name;
+    //const verifyProduct  = productList[identificador].name;
+    // const articulosFiltradaso = carritoCompras.filter(function(articulo){
+    //     return articulo.name == verifyProduct;
+    // });
+
     const articulosFiltradaso = carritoCompras.filter(function(articulo){
-        return articulo.name == verifyProduct;
+        return articulo.id == identificador;
     });
+   
    
     if ( articulosFiltradaso.length != 0 )
     {
         
-        const elementIndexCarrito = carritoCompras.findIndex((obj => obj.name == verifyProduct));
+        // const elementIndexCarrito = carritoCompras.findIndex((obj => obj.name == verifyProduct));
+        const elementIndexCarrito = carritoCompras.findIndex((obj => obj.id == identificador));
         let cantidadAgregadas = carritoCompras[elementIndexCarrito].cantidad;
         cantidadAgregadas++;
         carritoCompras[elementIndexCarrito].cantidad = cantidadAgregadas;
 
     } else {
     //Agregamos al carrito de compras
-    carritoCompras.push(productList[identificador]);
+    const elementIndexProductList = productList.findIndex((obj=> obj.id == identificador));
+    //carritoCompras.push(productList[identificador]);
+    carritoCompras.push(productList[elementIndexProductList]);
 
-    //Deveriamos agregar un control para verificar si ya existe ese objeto
-    //si es así, deberiamos agregar un nuevo elemento a ese objeto que sea la cantidad.
     }
     
     let elementoAgregado = 0;
@@ -142,12 +148,20 @@ function agregarAlCarrito(identificador) {
 
 //Eliminar del carrito
 function eliminarDelCarrito(identificador){
-
-    let cantidadProducto = carritoCompras[identificador].cantidad;
+    const indexDelObjeto = carritoCompras.findIndex((obj => obj.id == identificador));
+    let cantidadProducto = carritoCompras[indexDelObjeto].cantidad;
 
     if ( cantidadProducto > 1 ){
         //Se se resta del render "my order" y del icono cartElements
-        let elementoContavilizado = 0;
+                //Actualizamos el valor del elemento en el array -1
+        let cantidadActual =  carritoCompras[indexDelObjeto].cantidad;
+        carritoCompras[indexDelObjeto].cantidad = cantidadActual - 1;
+        
+        //Identificar elemento cantidad dentro del Div que contine las ordenes.
+        //Actualizamos el render con la cantidad guardad actualizada.
+        document.getElementById("Elemento"+identificador).innerText = carritoCompras[indexDelObjeto].cantidad;
+
+        let elementoContavilizado = 1;
         for ( elemento of carritoCompras){
             let elementoRecorridoCantidad = elemento.cantidad;
             elementoContavilizado = elementoContavilizado + elementoRecorridoCantidad;
@@ -155,28 +169,20 @@ function eliminarDelCarrito(identificador){
         let elementoRestado = elementoContavilizado - 1;
         cartElements.innerText = elementoRestado;
 
-        //Actualizamos el valor del elemento en el array -1
-        let cantidadActual =  carritoCompras[identificador].cantidad;
-        carritoCompras[identificador].cantidad = cantidadActual - 1;
-        
-        //Identificar elemento cantidad dentro del Div que contine las ordenes.
-        //Actualizamos el render con la cantidad guardad actualizada.
-        document.getElementById("Elemento"+identificador).innerText = carritoCompras[identificador].cantidad;
-        
-
     } else {
 
         //Eliminamos producto del carrito
-        carritoCompras.splice(identificador, 1);
+        carritoCompras.splice(indexDelObjeto, 1);
 
         //Removemos los Elementos HTML del DOM
         document.getElementById("shoppingCart"+identificador).remove();
 
 
         //Se se resta del render "my order" y del icono cartElements
-        let elementoContavilizado = 0;
+        let elementoContavilizado = 1;
         for ( elemento of carritoCompras){
             let elementoRecorridoCantidad = elemento.cantidad;
+            
             elementoContavilizado = elementoContavilizado + elementoRecorridoCantidad;
         }
         let elementoRestado = elementoContavilizado - 1;
@@ -292,7 +298,7 @@ function renderCarrito(arr){
 
 
     //Contador: Necesario para eliminar objeto del carrito
-    let contadorCarrito = 0;
+    //let contadorCarrito = 0;
 
     //Obtenemos las diferencias entre el array pasado al argumento y el de verificationCcArray
     let difference = arr.filter(x => !verificationCcArray.includes(x));
@@ -306,7 +312,8 @@ function renderCarrito(arr){
 
             const shoppingCart = document.createElement('div');
             shoppingCart.classList.add('shopping-cart');
-            shoppingCart.setAttribute('id', 'shoppingCart'+contadorCarrito );
+            //shoppingCart.setAttribute('id', 'shoppingCart'+contadorCarrito );
+            shoppingCart.setAttribute('id', 'shoppingCart'+productCartArr.id );
                 
             const figureImgCart = document.createElement('figure');
             const imgCart = document.createElement('img');
@@ -314,7 +321,8 @@ function renderCarrito(arr){
 
             const cantidadMostrar = document.createElement('p');
             cantidadMostrar.innerText = productCartArr.cantidad;
-            cantidadMostrar.setAttribute('id', 'Elemento'+contadorCarrito);
+            // cantidadMostrar.setAttribute('id', 'Elemento'+contadorCarrito);
+            cantidadMostrar.setAttribute('id', 'Elemento'+productCartArr.id);
 
             const parrafoNombre = document.createElement('p');
             parrafoNombre.innerText =  productCartArr.name;
@@ -325,8 +333,9 @@ function renderCarrito(arr){
             const imgEliminarProducto = document.createElement('img');
             imgEliminarProducto.setAttribute('src', './icons/icon_close.png');
             imgEliminarProducto.setAttribute('alt', 'close');
-            imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito('+contadorCarrito+')' );
-            contadorCarrito++;
+            // imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito('+contadorCarrito+')' );
+            imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito('+productCartArr.id+')' );
+            //contadorCarrito++;
 
             //Maquetado
             myOrderContent.appendChild(shoppingCart);
@@ -353,8 +362,6 @@ function renderCarrito(arr){
 function renderProducts(arr){
 
     
-    let contador = 0;
-
     //Recorremos el array para representar en HTML nuestros productos
     //nos da directamente el elemento del array
     for (product of arr ){
@@ -402,6 +409,12 @@ function renderProducts(arr){
             });
             descripcionDetail.innerHTML = descripcionFiltrado;
 
+            //identificamos el button agregar al carrito
+            const agregarAlCarritoAside = document.querySelector("#buttonAdd2Carrito");
+            const idProducto = product.id;
+            agregarAlCarritoAside.setAttribute('onclick', 'agregarAlCarrito('+ idProducto +')');
+            //Falta: Agragr un efecto visual al button cuando se realiza el click.
+
         });
 
     
@@ -427,12 +440,9 @@ function renderProducts(arr){
                     const productInfoFigureImg = document.createElement('img');
                     productInfoFigureImg.setAttribute('src', './icons/bt_add_to_cart.svg');
                 
-                    
-                    
-                    
                     //Agregamos un evento onclick en cada elemento generado para llamar a un función
-                    productInfoFigureImg.setAttribute('onclick', 'agregarAlCarrito('+ contador +')');
-                    contador++;
+                    productInfoFigureImg.setAttribute('onclick', 'agregarAlCarrito('+ product.id +')');
+                    
 
 
 
