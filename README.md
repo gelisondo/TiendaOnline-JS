@@ -1,7 +1,7 @@
 # Tienda Online - JS
 
    Este proyecto es un fork del prodcto web "curso-frontedn-developer-practico", 
-desarrollado en el marco del curso **Curso Práctico de JavaScript** de [Platzi](https://platzi.com/cursos/javascript-practico/).
+desarrollado en el marco del **Curso Práctico de JavaScript** de [Platzi](https://platzi.com/cursos/javascript-practico/).
 
    A este proyecto se le agregaron nuevas funcionalidades para tener un producto web mas completo. La programación realizada es puntualmente para un sitio que funciona del lado **front-end**, por ende no se comuníca con un **Back-END** para obtener los datos. Aun que, parte de los algoritmos utilizados pueden alludar a otrxs en sus proyectos.
 
