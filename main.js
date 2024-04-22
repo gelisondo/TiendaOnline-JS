@@ -205,7 +205,7 @@ productList.push({
 
 productList.push({
     name: 'Moto BMW - Coffe Reacer',
-    category: 'motos',
+    category: 'motorcycle',
     price: 5000,
     imagen: 'https://cdn.pixabay.com/photo/2016/04/07/06/53/bmw-1313343_960_720.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     descripcion: 'Una gran moto de la marca BMW custom, modelado a una clasica apariencia Coffee Reacer',
@@ -225,7 +225,7 @@ productList.push({
 
 productList.push({
     name: 'TOYOTA MR2',
-    category: 'autos',
+    category: 'carts',
     price: 7000,
     imagen: 'https://images.pexels.com/photos/17797237/pexels-photo-17797237/free-photo-of-coche-vehiculo-vintage-retro.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
     descripcion: 'Arto auto que nos hace recordar a peliculas de los 80s',
@@ -247,7 +247,7 @@ productList.push({
 //6
 productList.push({
     name: 'Telefono',
-    category: 'others',
+    category: 'home',
     price: 120,
     imagen: 'https://images.pexels.com/photos/17786712/pexels-photo-17786712/free-photo-of-madera-vintage-de-madera-antiguo.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     descripcion: 'Un clasico teléfono funcional, con roldete de marcas',
@@ -259,7 +259,7 @@ productList.push({
 //7
 productList.push({
     name: 'Wold Waggen Band',
-    category: 'autos',
+    category: 'carts',
     price: 7000,
     imagen: 'https://images.pexels.com/photos/17606859/pexels-photo-17606859/free-photo-of-vehiculo-viaje-viajar-retro.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     descripcion: 'Mini Band clasica de los años 60',
@@ -271,7 +271,7 @@ productList.push({
 //8
 productList.push({
     name: 'Motor - V5 ',
-    category: 'autos',
+    category: 'carts',
     price: 7000,
     imagen: 'https://images.pexels.com/photos/17575475/pexels-photo-17575475/free-photo-of-coche-vehiculo-tuberias-retro.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     descripcion: 'Un maquinon, no te deja tirado con tremendo motor. Como nafta como loco',
@@ -283,7 +283,7 @@ productList.push({
 //9
 productList.push({
     name: 'Write Machine',
-    category: 'others',
+    category: 'home',
     price: 600,
     imagen: 'https://images.pexels.com/photos/3808904/pexels-photo-3808904.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     descripcion: 'Maquina de escribir de Isaac Assimov, en ella escribio sus mejores novelas de ciencia ficción',
@@ -335,6 +335,9 @@ function renderCarrito(arr){
             imgEliminarProducto.setAttribute('alt', 'close');
             // imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito('+contadorCarrito+')' );
             imgEliminarProducto.setAttribute('onclick', 'eliminarDelCarrito('+productCartArr.id+')' );
+
+            //Agregar manito para hacer clik
+            imgEliminarProducto.setAttribute('class', 'puntero');
             //contadorCarrito++;
 
             //Maquetado
@@ -442,13 +445,8 @@ function renderProducts(arr){
                 
                     //Agregamos un evento onclick en cada elemento generado para llamar a un función
                     productInfoFigureImg.setAttribute('onclick', 'agregarAlCarrito('+ product.id +')');
-                    
-
-
-
-                                
-
-    
+                    productInfoFigureImg.setAttribute('class', 'puntero');
+                        
             //Agregamos El orden de los elementos con appendChild, indicando cual sera el hijo del elemento seleccionado
             //Agregamos a product-card debajo de cards-container
             cardsContainer.appendChild(productCard);
@@ -476,3 +474,33 @@ function renderProducts(arr){
 
 //Llamamos la función para renderizar
 renderProducts(productList);
+
+//Función Filtrar
+function megaFiltro(catFilter){
+    //Elimina el render actual
+    deleteProduct();
+
+    if( catFilter == "all"){
+        renderProducts(productList);
+    } else {
+
+    //Creamos un nuevo array filtrado
+    const articuloCategoria = productList.filter(function(arrObjeto){
+        return arrObjeto.category == catFilter;
+    });
+
+    renderProducts(articuloCategoria);
+    }
+
+
+}
+
+//Eliminamos los elementos producCards
+function deleteProduct() {
+    let allElements = Array.from(document.querySelectorAll(".product-card"));
+
+    allElements.forEach((item) => {
+        item.remove();
+    });
+
+}
